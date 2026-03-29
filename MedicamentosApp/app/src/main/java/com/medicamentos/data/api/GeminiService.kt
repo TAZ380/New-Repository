@@ -65,7 +65,8 @@ class GeminiService(private val apiKey: String) {
                   "mecanismoAccion": "mecanismo de acción y efectos farmacológicos (máx 400 palabras)",
                   "efectosAdversos": "efectos adversos frecuentes e importantes (máx 400 palabras)",
                   "diluyentes": "sueros y vehículos compatibles para dilución IV (si no aplica: 'No aplica')",
-                  "concentracionMaxima": "concentración máxima permitida en mg/ml u otra unidad (si no especificada: 'No especificada')"
+                  "concentracionMaxima": "concentración máxima permitida en mg/ml u otra unidad (si no especificada: 'No especificada')",
+                  "incompatibilidades": "contenido completo de la sección 6.2 Incompatibilidades de la ficha técnica (si no especificada: 'No especificadas')"
                 }
 
                 HTML:
@@ -74,6 +75,37 @@ class GeminiService(private val apiKey: String) {
 
             val raw = callGemini(prompt)
             parseDrugInfoFromJson(raw)
+        }
+
+    // ── OCR text → PatientOcrResult ────────────────────────────────────────
+
+    suspend fun extractPatientData(ocrText: String): PatientOcrResult =
+        withContext(Dispatchers.IO) {
+            val prompt = """
+                Eres un asistente médico hospitalario experto en farmacología.
+                Del siguiente texto OCR extraído de una lista de medicamentos hospitalaria,
+                extrae el nombre del paciente, el número de cama y la lista de medicamentos.
+
+                Devuelve ÚNICAMENTE un JSON con este formato exacto:
+                {
+                  "paciente": "NOMBRE_PACIENTE",
+                  "cama": "NUMERO_CAMA",
+                  "medicamentos": [{"nombre": "NOMBRE_FARMACO", "hora": "HH:MM"}]
+                }
+
+                Reglas:
+                - Si no encuentras el nombre del paciente, usa "Paciente desconocido".
+                - Si no encuentras el número de cama, usa "?".
+                - Si un fármaco aparece a varias horas, crea una entrada por cada hora.
+                - Si no hay hora legible, usa "00:00".
+                - Sin explicaciones, sin markdown, solo el JSON.
+
+                Texto OCR:
+                $ocrText
+            """.trimIndent()
+
+            val raw = callGemini(prompt)
+            parsePatientDataFromJson(raw)
         }
 
     // ── Low-level HTTP call ────────────────────────────────────────────────
@@ -141,11 +173,43 @@ class GeminiService(private val apiKey: String) {
             GeminiDrugInfo()
         }
     }
+
+    private fun parsePatientDataFromJson(raw: String): PatientOcrResult {
+        return try {
+            val cleaned = raw.replace("```json", "").replace("```", "").trim()
+            val jsonObj = gson.fromJson(cleaned, JsonObject::class.java)
+            val paciente = jsonObj.get("paciente")?.asString ?: "Paciente desconocido"
+            val cama = jsonObj.get("cama")?.asString ?: "?"
+            val medsArray = jsonObj.getAsJsonArray("medicamentos")
+            val medications = if (medsArray != null) {
+                val type = object : TypeToken<List<Map<String, String>>>() {}.type
+                val list: List<Map<String, String>> = gson.fromJson(medsArray, type)
+                list.mapNotNull { item ->
+                    val name = item["nombre"] ?: return@mapNotNull null
+                    if (name.isBlank()) return@mapNotNull null
+                    com.medicamentos.data.model.Medication(
+                        nombre = name,
+                        hora = item["hora"] ?: "00:00"
+                    )
+                }
+            } else emptyList()
+            PatientOcrResult(paciente = paciente, cama = cama, medicamentos = medications)
+        } catch (e: Exception) {
+            PatientOcrResult()
+        }
+    }
 }
 
 data class GeminiDrugInfo(
     val mecanismoAccion: String = "Información no disponible",
     val efectosAdversos: String = "Información no disponible",
     val diluyentes: String = "No aplica",
-    val concentracionMaxima: String = "No especificada"
+    val concentracionMaxima: String = "No especificada",
+    val incompatibilidades: String = "No especificadas"
+)
+
+data class PatientOcrResult(
+    val paciente: String = "Paciente desconocido",
+    val cama: String = "?",
+    val medicamentos: List<com.medicamentos.data.model.Medication> = emptyList()
 )

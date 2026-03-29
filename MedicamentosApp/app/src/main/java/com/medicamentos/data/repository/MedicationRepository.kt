@@ -77,7 +77,8 @@ class MedicationRepository {
                     mecanismoAccion = geminiInfo.mecanismoAccion,
                     efectosAdversos = geminiInfo.efectosAdversos,
                     diluyentes = geminiInfo.diluyentes,
-                    concentracionMaxima = geminiInfo.concentracionMaxima
+                    concentracionMaxima = geminiInfo.concentracionMaxima,
+                    incompatibilidades = geminiInfo.incompatibilidades
                 )
             } catch (e: Exception) {
                 emptyDetail(name)
@@ -111,6 +112,7 @@ class MedicationRepository {
         mecanismoAccion = "No disponible",
         efectosAdversos = "No disponible",
         diluyentes = "No disponible",
-        concentracionMaxima = "No disponible"
+        concentracionMaxima = "No disponible",
+        incompatibilidades = "No disponible"
     )
 }

@@ -13,5 +13,6 @@ data class DrugDetail(
     val mecanismoAccion: String,
     val efectosAdversos: String,
     val diluyentes: String,
-    val concentracionMaxima: String
+    val concentracionMaxima: String,
+    val incompatibilidades: String = "No especificadas"
 )
