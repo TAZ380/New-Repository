@@ -1,0 +1,3 @@
+-keep class com.medicamentos.data.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
