@@ -1,8 +1,8 @@
 package com.medicamentos.data.repository
 
 import android.graphics.Bitmap
-import com.medicamentos.BuildConfig
 import com.medicamentos.data.api.GeminiDrugInfo
+import com.medicamentos.util.PreferencesManager
 import com.medicamentos.data.api.GeminiService
 import com.medicamentos.data.api.PatientOcrResult
 import com.medicamentos.data.api.RetrofitClient
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 class MedicationRepository {
 
     private val cimaApi = RetrofitClient.cimaApiService
-    private val gemini = GeminiService(BuildConfig.GEMINI_API_KEY)
+    private val gemini get() = GeminiService(PreferencesManager.getGeminiApiKey())
     private val ocr = OcrProcessor()
 
     // ── Photo → sorted medication list ────────────────────────────────────

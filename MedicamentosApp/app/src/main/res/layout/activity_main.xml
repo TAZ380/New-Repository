@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- Toolbar con menú de ajustes -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@android:color/white"
+        app:subtitleTextColor="#CCffffff"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <!-- Fragment container takes all remaining space -->
     <FrameLayout
         android:id="@+id/fragmentContainer"
