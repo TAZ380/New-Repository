@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Medicamentos</string>
+    <string name="take_photo">Tomar foto</string>
+    <string name="open_gallery">Abrir galería</string>
+    <string name="empty_title">Sin medicamentos</string>
+    <string name="empty_subtitle">Toca el botón de cámara para\nescanear una lista de medicamentos</string>
+
+    <!-- Drug detail labels -->
+    <string name="label_grupo">Grupo terapéutico (ATC)</string>
+    <string name="label_forma">Forma farmacéutica</string>
+    <string name="label_vias">Vías de administración</string>
+    <string name="label_mecanismo">Mecanismo de acción</string>
+    <string name="label_adversos">Efectos adversos</string>
+    <string name="label_diluyentes">Diluyentes / Sueros compatibles</string>
+    <string name="label_concentracion">Concentración máxima permitida</string>
+    <string name="label_incompatibilidades">Incompatibilidades (sección 6.2)</string>
+
+    <!-- Plurals -->
+    <plurals name="medication_count">
+        <item quantity="one">%d medicamento</item>
+        <item quantity="other">%d medicamentos</item>
+    </plurals>
+</resources>
