@@ -6,8 +6,6 @@ import com.medicamentos.data.db.PatientEntity
 import com.medicamentos.data.model.Medication
 import com.medicamentos.data.model.Patient
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.util.UUID
 

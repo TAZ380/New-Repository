@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.medicamentos.BuildConfig
 import com.medicamentos.data.api.GeminiDrugInfo
 import com.medicamentos.data.api.GeminiService
+import com.medicamentos.data.api.PatientOcrResult
 import com.medicamentos.data.api.RetrofitClient
 import com.medicamentos.data.model.DrugDetail
 import com.medicamentos.data.model.Medication
@@ -47,6 +48,14 @@ class MedicationRepository {
         } catch (e: Exception) {
             med
         }
+    }
+
+    // ── Photo → PatientOcrResult ──────────────────────────────────────────
+
+    suspend fun extractPatientData(bitmap: Bitmap): PatientOcrResult {
+        val ocrText = ocr.extractText(bitmap)
+        if (ocrText.isBlank()) return PatientOcrResult()
+        return gemini.extractPatientData(ocrText)
     }
 
     // ── Drug detail screen ────────────────────────────────────────────────

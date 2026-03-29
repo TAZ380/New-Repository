@@ -14,4 +14,11 @@
     <string name="label_adversos">Efectos adversos</string>
     <string name="label_diluyentes">Diluyentes / Sueros compatibles</string>
     <string name="label_concentracion">Concentración máxima permitida</string>
+    <string name="label_incompatibilidades">Incompatibilidades (sección 6.2)</string>
+
+    <!-- Plurals -->
+    <plurals name="medication_count">
+        <item quantity="one">%d medicamento</item>
+        <item quantity="other">%d medicamentos</item>
+    </plurals>
 </resources>

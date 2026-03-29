@@ -67,6 +67,7 @@ class DrugDetailActivity : AppCompatActivity() {
         binding.tvEfectosAdversos.text = d.efectosAdversos
         binding.tvDiluyentes.text = d.diluyentes
         binding.tvConcentracionMaxima.text = d.concentracionMaxima
+        binding.tvIncompatibilidades.text = d.incompatibilidades
     }
 
     override fun onSupportNavigateUp(): Boolean {
