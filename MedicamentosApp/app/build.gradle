@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'com.medicamentos'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.medicamentos"
         minSdk 26
-        targetSdk 34
+        targetSdk 35
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -91,6 +91,6 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.6.2'
 
     // Firebase Auth
-    implementation platform('com.google.firebase:firebase-bom:33.0.0')
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
 }
